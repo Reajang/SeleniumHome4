@@ -30,9 +30,6 @@ public abstract class BasePage {
 
     public void fillText(WebElement element, String text) {
 
-        //DriverManager.getWaiter().until(ExpectedConditions.elementToBeClickable(element));
-        //element.clear();
-        //element.click();
         Actions actions = new Actions(DriverManager.getDriver());
         actions.moveToElement(element).click().perform();
         element.sendKeys(text);
@@ -66,8 +63,5 @@ public abstract class BasePage {
         elemClick(elementList.get(value));
     }
 
-    public void checkSelect() {
-
-    }
 
 }

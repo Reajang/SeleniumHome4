@@ -1,6 +1,7 @@
 package CucumberSteps;
 
 import cucumber.api.java.ru.Допустим;
+import io.cucumber.datatable.DataTable;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 import pages.DriverManager;
@@ -12,6 +13,7 @@ import pages.sberPages.RegistrationPage;
 import pages.sberPages.SberPersonPage;
 
 import java.util.List;
+import java.util.Map;
 
 public class Steps {
 
@@ -19,9 +21,9 @@ public class Steps {
     static DmsRgsPage dmsRgsPage = new DmsRgsPage();
     static DmsRequestPage dmsRequestPage = new DmsRequestPage();*/
 
-    @Допустим("Перейти по ссылке http://www.rgs.ru")
-    public void openRsgUrl(){
-        DriverManager.initialDriver("https://www.rgs.ru");
+    @Допустим("Перейти по ссылке {string}")
+    public void openRsgUrl(String rsgUrl){
+        DriverManager.initialDriver(rsgUrl);
     }
     @Допустим("Выбрать пункт меню - страхование")
     public void insuranceRsg(){
@@ -35,38 +37,36 @@ public class Steps {
         mainRgsPage.clickDms();
     }
 
-    @Допустим("Проверить наличие заголовка - Добровольное медицинское страхование")
-    public void checkDmsTitle(){
+    @Допустим("Проверить наличие заголовка - {string}")
+    public void checkDmsTitle(String string){
         DmsRgsPage dmsRgsPage = new DmsRgsPage();
-        dmsRgsPage.checkTitle();
+        dmsRgsPage.checkTitle(string);
     }
 
-    @Допустим("Нажать на кнопку -Отправить заявку")
+    @Допустим("Нажать на кнопку - Отправить заявку")
     public void clickSendRequest(){
         DmsRgsPage dmsRgsPage = new DmsRgsPage();
         dmsRgsPage.clickSendRequest();
         }
 
-    @Допустим("Проверить, что открылась страница , на которой присутствует текст -Заявка на добровольное медицинское страхование")
-    public void checkDmsRequest(){
+    @Допустим("Проверить, что открылась страница , на которой присутствует текст - {string}")
+    public void checkDmsRequest(String string){
         DmsRequestPage dmsRequestPage = new DmsRequestPage();
-        dmsRequestPage.checkFormTitle();
+        dmsRequestPage.checkFormTitle(string);
     }
     @Допустим("Заполнение полей")
-    public void fillFields(){
+    public void fillFields(List<String> textToInput){
         DmsRequestPage dmsRequestPage = new DmsRequestPage();
         List<WebElement> necessaryFields = dmsRequestPage.getNesesseryElements();
-        List<String> textToInput = dmsRequestPage.getTextToInputs();
         dmsRequestPage.fillFields(textToInput, necessaryFields);
         dmsRequestPage.fillSelect(dmsRequestPage.getRegions(), 1);
         dmsRequestPage.clickAgree();
     }
     @Допустим("Проверить, что все поля заполнены введенными значениями")
-    public void checkFieldsRsg(){
+    public void checkFieldsRsg(List<String> textToCheck){
         DmsRequestPage dmsRequestPage = new DmsRequestPage();
         List<WebElement> necessaryFields = dmsRequestPage.getNesesseryElements();
-        List<String> textToCheck = dmsRequestPage.getTextToCheck();
-        Assert.assertEquals("77", dmsRequestPage.getRegions().get(1).getAttribute("value"));//Нужно вынести в отдельный метод
+        Assert.assertEquals("77", dmsRequestPage.getRegions().get(1).getAttribute("value"));
         dmsRequestPage.assertData(textToCheck, necessaryFields);
     }
 
@@ -76,23 +76,18 @@ public class Steps {
         dmsRequestPage.clickSendButton();
     }
 
-    @Допустим("Проверить, что у Поля -Эл. почта присутствует сообщение об ошибке -Введите корректный email")
+    @Допустим("Проверить, что у поля Эл. почта присутствует сообщение об ошибке")
     public void emailError(){
         DmsRequestPage dmsRequestPage = new DmsRequestPage();
         dmsRequestPage.checkEmailError();
         dmsRequestPage.fillEmail("trainee@aplana.ru");
-        //DriverManager.closePages();
     }
 
     //==========================
 
-    /*
-    SberPersonPage sberPersonPage = new SberPersonPage();
-    InsuranceTravelersPage insuranceTravelersPage = new InsuranceTravelersPage();
-    RegistrationPage registrationPage = new RegistrationPage();*/
-    @Допустим("Перейти на страницу http:\\/\\/www.sberbank.ru\\/ru\\/person")
-    public void setUrl(){
-        DriverManager.initialDriver("http://www.sberbank.ru/ru/person");
+    @Допустим("Перейти на страницу {string}")
+    public void setUrl(String sberUrl){
+        DriverManager.initialDriver(sberUrl);
     }
     @Допустим("Нажать на – Страхование")
     public void insuranceSber(){
@@ -104,10 +99,10 @@ public class Steps {
         SberPersonPage sberPersonPage = new SberPersonPage();
         sberPersonPage.clickTravel();
     }
-    @Допустим("Проверить наличие на странице заголовка – Страхование путешественников")
-    public void checkTravelTitle(){
+    @Допустим("Проверить наличие на странице заголовка – {string}")
+    public void checkTravelTitle(String string){
         SberPersonPage sberPersonPage = new SberPersonPage();
-        sberPersonPage.checkTitle();
+        sberPersonPage.checkTitle(string);
     }
     @Допустим("Нажать на – Оформить Онлайн")
     public void clickOnline(){
@@ -125,28 +120,26 @@ public class Steps {
         insuranceTravelersPage.clickIssue();
     }
     @Допустим("На вкладке Оформить заполнить поля:")
-    public void fill(){
+    public void fill(List<String> textToInput){
         RegistrationPage registrationPage = new RegistrationPage();
         List<WebElement> necessaryFields = registrationPage.getNesesseryElements();
-        List<String> textToInput = registrationPage.getTextToInputs();
         registrationPage.fillFields(textToInput, necessaryFields);
     }
     @Допустим("Проверить, что все поля заполнены правильно")
-    public void checkFieldsSber(){
+    public void checkFieldsSber(List<String> textToCheck){
         RegistrationPage registrationPage = new RegistrationPage();
         List<WebElement> necessaryFields = registrationPage.getNesesseryElements();
-        List<String> textToInput = registrationPage.getTextToInputs();
-        registrationPage.assertData(textToInput, necessaryFields);
+        registrationPage.assertData(textToCheck, necessaryFields);
     }
     @Допустим("Нажать продолжить")
     public void continueButton(){
         RegistrationPage registrationPage = new RegistrationPage();
         registrationPage.clickContinueButton();
     }
-    @Допустим("Проверить, что появилось сообщение - Заполнены не все обязательные поля")
-    public void checkErrorMessage(){
+    @Допустим("Проверить, что появилось сообщение - {string}")
+    public void checkErrorMessage(String string){
         RegistrationPage registrationPage = new RegistrationPage();
-        registrationPage.assertErrorMessage();
+        registrationPage.assertErrorMessage(string);
         DriverManager.closePages();
         DriverManager.getDriver().quit();
     }

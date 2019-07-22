@@ -32,8 +32,8 @@ public class SberPersonPage extends BasePage {
         elemClick(makeOnline);
     }
 
-    public void checkTitle() {
-        Assert.assertEquals("\nНет надписи ", "Страхование путешественников", title.getText());
+    public void checkTitle(String string) {
+        assertData(string, title);
     }
 
     public WebElement getMakeOnline() {

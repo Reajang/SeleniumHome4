@@ -39,9 +39,6 @@ public class RegistrationPage extends BasePage {
     @FindBy(xpath = "//div[@ng-show='tryNext && myForm.$invalid']")
     private WebElement errorMessage;
 
-    public List<String> getTextToInputs(){
-        return  Arrays.asList("Ivan", "Ivanov", "16.05.1994", "Шультц", "Андрей", "Петрович", "28.09.1999", "1234", "567890", "12.10.2013");
-    }
 
     public List<WebElement> getNesesseryElements(){
         List<WebElement> list = new ArrayList<>();
@@ -113,8 +110,8 @@ public class RegistrationPage extends BasePage {
     public WebElement getErrorMessage() {
         return errorMessage;
     }
-    public void assertErrorMessage(){
-        Assert.assertEquals("\nНет сообщения","Заполнены не все обязательные поля", getErrorMessage().getText());
+    public void assertErrorMessage(String string){
+        assertData(string, getErrorMessage());
     }
 }
 

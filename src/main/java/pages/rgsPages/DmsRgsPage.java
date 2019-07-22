@@ -20,8 +20,8 @@ public class DmsRgsPage extends BasePage {
         elemClick(sendRequest);
     }
 
-    public void checkTitle(){
-        assertData("ДМС —"  +" добровольное медицинское страхование", getDmsTitle());
+    public void checkTitle(String string){
+        assertData(string, getDmsTitle());
     }
 
 }
